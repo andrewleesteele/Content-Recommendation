@@ -1,0 +1,24 @@
+public with sharing class contentRecController{
+    @auraenabled
+    public static List<Content__c> getItems (String recordId){
+        Opportunity opp = [SELECT Id, Product__c, StageName FROM Opportunity WHERE Id =: recordId];
+		
+        Map<String, String> funnel = new Map<String, String>();
+        funnel.put('Identifying an Opportunity', 'TOFU');
+        funnel.put('Determining Problem, Impact, Ideal', 'MOFU');
+        
+        funnel.put('Validating Benefits & Value', 'MOFU');
+        funnel.put('Confirming Value with Power', 'BOFU');
+        funnel.put('Negotiating $$ & Mutual Plan', 'BOFU');
+        
+        funnel.put('Finalizing Closure', 'BOFU');
+        funnel.put('Pending', 'BOFU');
+        
+        funnel.put('Closed Won', '');
+        funnel.put('Closed Lost', '');
+        
+        return [SELECT Id, Name, Content_Type__c, Summary__c, Content_Marketing_Funnel__c, Content_Link__c 
+                                   FROM Content__c 
+                                   WHERE Product__c=: opp.Product__c AND Content_Marketing_Funnel__c =: funnel.get(opp.StageName)]; 
+    }  
+}

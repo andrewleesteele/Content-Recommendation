@@ -1,0 +1,19 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="contentRecController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+<aura:dependency resource="markup://force:showToast" type="EVENT" />
+<aura:handler event="force:showToast" action="{!c.doInit}" />
+    <aura:attribute name="items" type="Content__c[]"/>
+    <aura:attribute name="er" type="boolean" default="false"/>
+	<aura:attribute name="Opportunity" type="Opportunity"/>
+    <aura:attribute name="recordId" type="String" default=""/>
+
+    
+	
+<lightning:card iconName="standard:article" title="Content Recommendation" class="slds-text-heading_small">
+    <!-- Contact list goes here -->
+    <aura:iteration items="{!v.items}" var="PerItem">
+        <c:contentRecItem item="{!PerItem}" />
+    </aura:iteration>
+</lightning:card>
+
+</aura:component>
